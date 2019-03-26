@@ -1,4 +1,4 @@
-package cn.guanmai.gm_pad_scanner;
+package cn.guanmai.gm_pda_scanner;
 
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;

@@ -1,4 +1,4 @@
-package cn.guanmai.gm_pad_scanner;
+package cn.guanmai.gm_pda_scanner;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
