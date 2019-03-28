@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -17,7 +18,7 @@ import android.view.KeyEvent;
 import com.sunmi.scanner.IScanInterface;
 
 public class SunmiScannerManager implements IScannerManager {
-    private Handler handler = new Handler();
+    private Handler handler = new Handler(Looper.getMainLooper());
     public static final String ACTION_DATA_CODE_RECEIVED = "com.sunmi.scanner.ACTION_DATA_CODE_RECEIVED";
     private static final String DATA = "data";
     private Context activity;

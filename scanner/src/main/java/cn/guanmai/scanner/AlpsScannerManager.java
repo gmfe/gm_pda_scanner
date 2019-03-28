@@ -2,6 +2,7 @@ package cn.guanmai.scanner;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 
@@ -10,7 +11,7 @@ import com.zltd.industry.ScannerManager;
 import java.io.UnsupportedEncodingException;
 
 public class AlpsScannerManager implements IScannerManager {
-    private Handler handler = new Handler();
+    private Handler handler = new Handler(Looper.getMainLooper());
     private Context activity;
     private static AlpsScannerManager instance;
     private ScannerManager mScannerManager;
