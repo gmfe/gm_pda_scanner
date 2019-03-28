@@ -34,7 +34,7 @@ public class AlpsScannerManager implements IScannerManager {
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
-                    if (s != null) {
+                    if (s != null && listener != null) {
                         listener.onScannerResultChange(s);
                     }
                 }

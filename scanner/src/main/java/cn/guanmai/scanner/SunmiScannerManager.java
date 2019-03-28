@@ -31,13 +31,17 @@ public class SunmiScannerManager implements IScannerManager {
     private ServiceConnection conn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder service) {
-            listener.onScannerServiceConnected();
+            if (listener != null) {
+                listener.onScannerServiceConnected();
+            }
             scanInterface = IScanInterface.Stub.asInterface(service);
         }
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
-            listener.onScannerServiceDisconnected();
+            if (listener != null) {
+                listener.onScannerServiceDisconnected();
+            }
             scanInterface = null;
         }
     };
@@ -50,7 +54,9 @@ public class SunmiScannerManager implements IScannerManager {
                 public void run() {
                     String code = intent.getStringExtra(DATA);
                     if (code != null && !code.isEmpty()) {
-                        listener.onScannerResultChange(code);
+                        if (listener != null) {
+                            listener.onScannerResultChange(code);
+                        }
                         if (singleScanFlag) {
                             singleScanFlag = false;
                             try {
