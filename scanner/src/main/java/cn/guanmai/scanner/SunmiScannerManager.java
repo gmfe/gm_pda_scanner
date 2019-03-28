@@ -109,7 +109,7 @@ public class SunmiScannerManager implements IScannerManager {
     public void sendKeyEvent(KeyEvent key) {
         try {
             scanInterface.sendKeyEvent(key);
-        } catch (RemoteException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -123,7 +123,7 @@ public class SunmiScannerManager implements IScannerManager {
     public int getScannerModel() {
         try {
             return scanInterface.getScannerModel();
-        } catch (RemoteException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return -1;
@@ -151,7 +151,7 @@ public class SunmiScannerManager implements IScannerManager {
                 scanInterface.scan();
                 singleScanFlag = true;
             }
-        } catch (RemoteException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -164,7 +164,7 @@ public class SunmiScannerManager implements IScannerManager {
             } else {
                 scanInterface.stop();
             }
-        } catch (RemoteException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
