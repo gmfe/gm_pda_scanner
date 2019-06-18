@@ -17,9 +17,9 @@ public class SupporterManager<T extends IScannerManager> {
      * UBX: 优博讯
      */
     public enum ScannerSupporter {
-        SUNMI("SUNMI", 1), ALPS("ALPS", 2), QCOM("QCOM", 3), SEUIC("SEUIC", 4), UBX("UBX", 5), OTHER("OTHER", -1);
+        SUNMI("SUNMI"), alps("alps"), SEUIC("SEUIC"), UBX("UBX"), OTHER("OTHER");
 
-        ScannerSupporter(String name, int id) {
+        ScannerSupporter(String name) {
         }
     }
 
@@ -29,17 +29,19 @@ public class SupporterManager<T extends IScannerManager> {
         try {
             scannerSupporter = ScannerSupporter.valueOf(manufacturer);
         } catch (Exception e) {
-            scannerSupporter = ScannerSupporter.OTHER;
+            String deviceBrand = Build.BRAND;
+            try {
+                scannerSupporter = ScannerSupporter.valueOf(deviceBrand);
+            } catch (Exception e1) {
+                scannerSupporter = ScannerSupporter.OTHER;
+            }
         }
         switch (scannerSupporter) {
             case SUNMI:
                 scannerManager = (T) SunmiScannerManager.getInstance(context);
                 break;
-            case ALPS:
+            case alps:
                 scannerManager = (T) AlpsScannerManager.getInstance(context);
-                break;
-            case QCOM:
-                scannerManager = (T) SEUICScannerManager.getInstance(context);
                 break;
             case SEUIC:
                 scannerManager = (T) SEUICScannerManager.getInstance(context);
@@ -51,10 +53,6 @@ public class SupporterManager<T extends IScannerManager> {
                 scannerManager = (T) new OtherScannerManager(context);
                 break;
         }
-        init();
-    }
-
-    private void init() {
         scannerManager.init();
     }
 
