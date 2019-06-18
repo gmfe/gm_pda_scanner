@@ -25,8 +25,9 @@ android {
 
 dependencies {
     def supportLibVersion = project.hasProperty('supportLibVersion') ? project.supportLibVersion : DEFAULT_SUPPORT_LIB_VERSION
-
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:$supportLibVersion"
-    implementation files('libs/zltd-n2s-scanner.jar')
+    implementation files('libs/zltd-n2s-scanner.jar') // 智联天地
+    implementation files('libs/ScannerAPI.jar') // 东大集成
+    implementation files('libs/platform_sdk_v2.4.0810.jar') // 优博讯
 }

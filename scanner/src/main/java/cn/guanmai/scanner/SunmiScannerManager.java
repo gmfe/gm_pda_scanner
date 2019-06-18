@@ -14,6 +14,7 @@ import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.Toast;
 
 import com.sunmi.scanner.IScanInterface;
 
@@ -35,6 +36,9 @@ public class SunmiScannerManager implements IScannerManager {
                 listener.onScannerServiceConnected();
             }
             scanInterface = IScanInterface.Stub.asInterface(service);
+            if (scanInterface != null) {
+                Toast.makeText(activity, "扫描头已初始化", Toast.LENGTH_SHORT).show();
+            }
         }
 
         @Override
