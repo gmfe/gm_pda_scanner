@@ -3,18 +3,18 @@ package cn.guanmai.scanner;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.KeyEvent;
-import android.widget.Toast;
 
 public class OtherScannerManager implements IScannerManager {
     private Context mContext;
+    private SupporterManager.IScanListener listener;
 
-    public OtherScannerManager(Context context) {
+    OtherScannerManager(Context context) {
         this.mContext = context;
     }
 
     @Override
     public void init() {
-        Toast.makeText(mContext, "无法获取扫描头", Toast.LENGTH_SHORT).show();
+        listener.onScannerInitFail();
     }
 
     @Override
@@ -24,7 +24,7 @@ public class OtherScannerManager implements IScannerManager {
 
     @Override
     public void setScannerListener(@NonNull SupporterManager.IScanListener listener) {
-
+        this.listener = listener;
     }
 
     @Override

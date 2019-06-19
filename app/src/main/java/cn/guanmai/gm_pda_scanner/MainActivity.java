@@ -1,19 +1,13 @@
 package cn.guanmai.gm_pda_scanner;
 
-import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import cn.guanmai.scanner.AlpsScannerManager;
-import cn.guanmai.scanner.SEUICScannerManager;
-import cn.guanmai.scanner.SunmiScannerManager;
 import cn.guanmai.scanner.SupporterManager;
-import cn.guanmai.scanner.UBXScannerManager;
 
 public class MainActivity extends AppCompatActivity {
     private SupporterManager mScannerManager;
@@ -35,8 +29,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initScanner() {
-        mScannerManager = new SupporterManager(this);
-        mScannerManager.setScannerListener(new SupporterManager.IScanListener() {
+        mScannerManager = new SupporterManager(this, new SupporterManager.IScanListener() {
             @Override
             public void onScannerResultChange(String result) {
                 String s = mTextView.getText().toString() + "\n";
@@ -45,12 +38,17 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onScannerServiceConnected() {
-
+                Toast.makeText(MainActivity.this, "扫描头初始化成功", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onScannerServiceDisconnected() {
 
+            }
+
+            @Override
+            public void onScannerInitFail() {
+                Toast.makeText(MainActivity.this, "无法获取扫描头，请重试！", Toast.LENGTH_SHORT).show();
             }
         });
     }

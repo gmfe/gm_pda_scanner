@@ -4,9 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.widget.Toast;
 
 import com.seuic.scanner.DecodeInfo;
 import com.seuic.scanner.DecodeInfoCallBack;
@@ -28,7 +26,6 @@ public class SEUICScannerManager implements IScannerManager {
                 @Override
                 public void run() {
                     String s = decodeInfo.barcode;
-                    Log.e("TAG", "result=" + s);
                     if (s != null) {
                         listener.onScannerResultChange(s);
                     }
@@ -57,9 +54,9 @@ public class SEUICScannerManager implements IScannerManager {
         mScanner = ScannerFactory.getScanner(activity);
         boolean isOpen = mScanner.open();
         if (isOpen) {
-            Toast.makeText(activity, "扫描头已初始化", Toast.LENGTH_SHORT).show();
+            listener.onScannerServiceConnected();
         } else {
-            Toast.makeText(activity, "扫描头初始化失败，请重试!", Toast.LENGTH_SHORT).show();
+            listener.onScannerInitFail();
         }
         mScanner.setDecodeInfoCallBack(mDecodeInfoCallBack);
         new Thread(new Runnable() {

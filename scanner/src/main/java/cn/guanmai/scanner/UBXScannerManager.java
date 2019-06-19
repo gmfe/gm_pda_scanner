@@ -8,9 +8,7 @@ import android.device.ScanManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.widget.Toast;
 
 public class UBXScannerManager implements IScannerManager {
     private Handler handler = new Handler(Looper.getMainLooper());
@@ -55,9 +53,9 @@ public class UBXScannerManager implements IScannerManager {
         mScanManager = new ScanManager();
         boolean b = mScanManager.openScanner();
         if (b) {
-            Toast.makeText(activity, "扫描头已初始化", Toast.LENGTH_SHORT).show();
+            listener.onScannerServiceConnected();
         } else {
-            Toast.makeText(activity, "扫描头初始化失败，请重试!", Toast.LENGTH_SHORT).show();
+            listener.onScannerInitFail();
         }
         registerReceiver();
     }

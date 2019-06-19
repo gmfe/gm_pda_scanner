@@ -23,7 +23,7 @@ public class SupporterManager<T extends IScannerManager> {
         }
     }
 
-    public SupporterManager(Context context) {
+    public SupporterManager(Context context, @NonNull IScanListener listener) {
         ScannerSupporter scannerSupporter;
         try {
             scannerSupporter = ScannerSupporter.valueOf(Build.MANUFACTURER);
@@ -47,6 +47,7 @@ public class SupporterManager<T extends IScannerManager> {
                 scannerManager = (T) new OtherScannerManager(context);
                 break;
         }
+        scannerManager.setScannerListener(listener);
         scannerManager.init();
     }
 
@@ -92,5 +93,7 @@ public class SupporterManager<T extends IScannerManager> {
         void onScannerServiceConnected();
 
         void onScannerServiceDisconnected();
+
+        void onScannerInitFail();
     }
 }
