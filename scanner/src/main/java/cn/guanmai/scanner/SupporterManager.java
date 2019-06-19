@@ -24,17 +24,11 @@ public class SupporterManager<T extends IScannerManager> {
     }
 
     public SupporterManager(Context context) {
-        String manufacturer = Build.MANUFACTURER;
         ScannerSupporter scannerSupporter;
         try {
-            scannerSupporter = ScannerSupporter.valueOf(manufacturer);
+            scannerSupporter = ScannerSupporter.valueOf(Build.MANUFACTURER);
         } catch (Exception e) {
-            String deviceBrand = Build.BRAND;
-            try {
-                scannerSupporter = ScannerSupporter.valueOf(deviceBrand);
-            } catch (Exception e1) {
-                scannerSupporter = ScannerSupporter.OTHER;
-            }
+            scannerSupporter = ScannerSupporter.OTHER;
         }
         switch (scannerSupporter) {
             case SUNMI:
