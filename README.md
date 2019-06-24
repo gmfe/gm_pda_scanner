@@ -38,3 +38,29 @@ Android Studio 直接运行 app module 即可
    ...
    ```
 
+### 使用
+
+```java
+SupporterManager sm = new SupporterManager(this, new SupporterManager.IScanListener() {
+    @Override
+    public void onScannerResultChange(String result) {
+        // scan result callback
+    }
+
+    @Override
+    public void onScannerServiceConnected() {
+        // init succeed
+    }
+
+    @Override
+    public void onScannerServiceDisconnected() {
+        // stop listener
+    }
+
+    @Override
+    public void onScannerInitFail() {
+        // init fail
+    }
+});
+```
+
