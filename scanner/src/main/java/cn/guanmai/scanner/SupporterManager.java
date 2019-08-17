@@ -17,7 +17,7 @@ public class SupporterManager<T extends IScannerManager> {
      * UBX: 优博讯
      */
     public enum ScannerSupporter {
-        SUNMI("SUNMI"), alps("alps"), SEUIC("SEUIC"), UBX("UBX"), OTHER("OTHER");
+        SUNMI("SUNMI"), alps("alps"), SEUIC("SEUIC"), UBX("UBX"), OTHER("OTHER"), idata("idata");
 
         ScannerSupporter(String name) {
         }
@@ -42,6 +42,9 @@ public class SupporterManager<T extends IScannerManager> {
                 break;
             case UBX:
                 scannerManager = (T) UBXScannerManager.getInstance(context);
+                break;
+            case idata:
+                scannerManager = (T)IDataScannerManager.getInstance(context);
                 break;
             default:
                 scannerManager = (T) new OtherScannerManager(context);

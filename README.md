@@ -7,6 +7,7 @@
 - [智联天地](http://www.zhiliantiandi.com/)
 - [江苏东大集成电路系统工程技术有限公司](https://www.seuic.com/)
 - [优博讯](http://www.urovo.com/)
+- [无锡盈达聚力科技 idata 95w](http://www.idatachina.com/)
 
 ### Demo
 
