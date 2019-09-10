@@ -1,5 +1,6 @@
 package cn.guanmai.gm_pda_scanner;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mTextView = findViewById(R.id.result);
+        mTextView.setText("制造商：" + Build.MANUFACTURER);
         Button clearText = findViewById(R.id.clear);
         clearText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,13 +34,15 @@ public class MainActivity extends AppCompatActivity {
         mScannerManager = new SupporterManager(this, new SupporterManager.IScanListener() {
             @Override
             public void onScannerResultChange(String result) {
-                String s = mTextView.getText().toString() + "\n";
+                String s = mTextView.getText().toString() + "\n" + "扫描结果:";
                 mTextView.setText(s + result);
             }
 
             @Override
             public void onScannerServiceConnected() {
                 Toast.makeText(MainActivity.this, "扫描头初始化成功", Toast.LENGTH_SHORT).show();
+                String s = mTextView.getText().toString() + "\n";
+                mTextView.setText(s + "扫描头初始化成功");
             }
 
             @Override
@@ -49,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onScannerInitFail() {
                 Toast.makeText(MainActivity.this, "无法获取扫描头，请重试！", Toast.LENGTH_SHORT).show();
+                String s = mTextView.getText().toString() + "\n";
+                mTextView.setText(s + "无法获取扫描头");
             }
         });
     }
