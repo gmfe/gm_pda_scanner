@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mTextView = findViewById(R.id.result);
-        mTextView.setText("制造商：" + Build.MANUFACTURER);
+        mTextView.setText("制造商：" + Build.MANUFACTURER + "\n" + "型号：" + Build.MODEL);
         Button clearText = findViewById(R.id.clear);
         clearText.setOnClickListener(new View.OnClickListener() {
             @Override

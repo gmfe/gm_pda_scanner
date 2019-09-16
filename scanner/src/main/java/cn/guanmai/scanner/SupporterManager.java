@@ -5,6 +5,8 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 
+import cn.guanmai.scanner.devices.sg6900.SG6900ScannerManager;
+
 public class SupporterManager<T extends IScannerManager> {
     private static SupporterManager<IScannerManager> instance;
     private T scannerManager;
@@ -15,9 +17,10 @@ public class SupporterManager<T extends IScannerManager> {
      * QCOM: 东大集成
      * SEUIC: 东大集成
      * UBX: 优博讯
+     * 型号SG6900: 深圳市思感科技有限公司
      */
     public enum ScannerSupporter {
-        SUNMI("SUNMI"), alps("alps"), SEUIC("SEUIC"), UBX("UBX"), OTHER("OTHER"), idata("idata");
+        SUNMI("SUNMI"), alps("alps"), SEUIC("SEUIC"), UBX("UBX"), OTHER("OTHER"), idata("idata"), SG6900("SG6900");
 
         ScannerSupporter(String name) {
         }
@@ -26,9 +29,13 @@ public class SupporterManager<T extends IScannerManager> {
     public SupporterManager(Context context, @NonNull IScanListener listener) {
         ScannerSupporter scannerSupporter;
         try {
-            scannerSupporter = ScannerSupporter.valueOf(Build.MANUFACTURER);
+            scannerSupporter = ScannerSupporter.valueOf(Build.MODEL); // 先匹配型号
         } catch (Exception e) {
-            scannerSupporter = ScannerSupporter.OTHER;
+            try {
+                scannerSupporter = ScannerSupporter.valueOf(Build.MANUFACTURER); // 如果没有，则匹配厂商
+            } catch (Exception e1) {
+                scannerSupporter = ScannerSupporter.OTHER;
+            }
         }
         switch (scannerSupporter) {
             case SUNMI:
@@ -44,7 +51,10 @@ public class SupporterManager<T extends IScannerManager> {
                 scannerManager = (T) UBXScannerManager.getInstance(context);
                 break;
             case idata:
-                scannerManager = (T)IDataScannerManager.getInstance(context);
+                scannerManager = (T) IDataScannerManager.getInstance(context);
+                break;
+            case SG6900:
+                scannerManager = (T)SG6900ScannerManager.getInstance(context);
                 break;
             default:
                 scannerManager = (T) new OtherScannerManager(context);
