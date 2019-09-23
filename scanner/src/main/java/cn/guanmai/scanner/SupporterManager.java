@@ -5,6 +5,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 
+import cn.guanmai.scanner.devices.jb.HT380KScannerManager;
 import cn.guanmai.scanner.devices.sg6900.SG6900ScannerManager;
 
 public class SupporterManager<T extends IScannerManager> {
@@ -18,9 +19,11 @@ public class SupporterManager<T extends IScannerManager> {
      * SEUIC: 东大集成
      * UBX: 优博讯
      * 型号SG6900: 深圳市思感科技有限公司
+     * 型号HT380K: 深圳市捷宝科技有限公司
      */
     public enum ScannerSupporter {
-        SUNMI("SUNMI"), alps("alps"), SEUIC("SEUIC"), UBX("UBX"), OTHER("OTHER"), idata("idata"), SG6900("SG6900");
+        SUNMI("SUNMI"), alps("alps"), SEUIC("SEUIC"), UBX("UBX"), OTHER("OTHER"), idata("idata"), SG6900("SG6900"),
+        HT380K("HT380K");
 
         ScannerSupporter(String name) {
         }
@@ -54,7 +57,10 @@ public class SupporterManager<T extends IScannerManager> {
                 scannerManager = (T) IDataScannerManager.getInstance(context);
                 break;
             case SG6900:
-                scannerManager = (T)SG6900ScannerManager.getInstance(context);
+                scannerManager = (T) SG6900ScannerManager.getInstance(context);
+                break;
+            case HT380K:
+                scannerManager = (T) HT380KScannerManager.getInstance(context);
                 break;
             default:
                 scannerManager = (T) new OtherScannerManager(context);

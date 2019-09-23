@@ -9,6 +9,7 @@
 - [优博讯](http://www.urovo.com/)
 - [无锡盈达聚力科技 idata 95w](http://www.idatachina.com/)
 - [深圳市思感科技有限公司](http://www.hualuoyun.com/)
+- [深圳市捷宝科技有限公司](http://5002237.shop.52bjw.cn/)
 
 ### Demo
 
