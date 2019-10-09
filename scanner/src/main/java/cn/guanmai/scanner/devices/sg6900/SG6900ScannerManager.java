@@ -3,6 +3,7 @@ package cn.guanmai.scanner.devices.sg6900;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 
@@ -18,7 +19,7 @@ public class SG6900ScannerManager implements IScannerManager {
     private ScanThread scanThread;
 
     @SuppressLint("HandlerLeak")
-    private Handler mHandler = new Handler() {
+    private Handler mHandler = new Handler(Looper.getMainLooper()) {
         public void handleMessage(android.os.Message msg) {
             if (msg.what == ScanThread.SCAN) {
                 String data = msg.getData().getString("data");
