@@ -21,26 +21,45 @@ public class SupporterManager<T extends IScannerManager> {
      * 型号SG6900: 深圳市思感科技有限公司
      * 型号HT380K: 深圳市捷宝科技有限公司
      * 型号 NLS-MT6210，制造商 Newland
+     * 型号 NLS-MT9210，制造商 Newland
      */
     public enum ScannerSupporter {
-        SUNMI("SUNMI"), alps("alps"), SEUIC("SEUIC"), UBX("UBX"), OTHER("OTHER"), idata("idata"), SG6900("SG6900"),
-        HT380K("HT380K"), Newland("Newland"), MT6210("NLS-MT6210");
+        SUNMI("SUNMI"), alps("alps"), SEUIC("SEUIC"), UBX("UBX"), OTHER("OTHER"), idata("idata"),
+        SG6900("SG6900"), HT380K("HT380K"), MT6210("NLS-MT6210"), MT9210("NLS-MT9210");
+
+        private String name;
 
         ScannerSupporter(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
     }
 
-    public SupporterManager(Context context, @NonNull IScanListener listener) {
-        ScannerSupporter scannerSupporter;
-        try {
-            scannerSupporter = ScannerSupporter.valueOf(Build.MODEL); // 先匹配型号
-        } catch (Exception e) {
-            try {
-                scannerSupporter = ScannerSupporter.valueOf(Build.MANUFACTURER); // 如果没有，则匹配厂商
-            } catch (Exception e1) {
-                scannerSupporter = ScannerSupporter.OTHER;
+    private ScannerSupporter getSupporter() {
+        // 先根据型号适配
+        for (ScannerSupporter supporter : ScannerSupporter.values()) {
+            if (supporter.getName().equals(Build.MODEL)) {
+                return supporter;
             }
         }
+        // 型号没有，再尝试根据厂商适配
+        for (ScannerSupporter supporter : ScannerSupporter.values()) {
+            if (supporter.getName().equals(Build.MANUFACTURER)) {
+                return supporter;
+            }
+        }
+        return ScannerSupporter.OTHER;
+    }
+
+    public SupporterManager(Context context, @NonNull IScanListener listener) {
+        ScannerSupporter scannerSupporter =getSupporter();
         switch (scannerSupporter) {
             case SUNMI:
                 scannerManager = (T) SunmiScannerManager.getInstance(context);
@@ -52,9 +71,7 @@ public class SupporterManager<T extends IScannerManager> {
                 scannerManager = (T) SEUICScannerManager.getInstance(context);
                 break;
             case MT6210:
-                scannerManager = (T) MT6210ScannerManager.getInstance(context);
-                break;
-            case Newland:
+            case MT9210:
                 scannerManager = (T) MT6210ScannerManager.getInstance(context);
                 break;
             case UBX:
