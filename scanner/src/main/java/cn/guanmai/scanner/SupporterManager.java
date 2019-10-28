@@ -3,8 +3,10 @@ package cn.guanmai.scanner;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.KeyEvent;
 
+import cn.guanmai.scanner.devices.PDAScannerManager;
 import cn.guanmai.scanner.devices.jb.HT380KScannerManager;
 import cn.guanmai.scanner.devices.newland.MT6210ScannerManager;
 import cn.guanmai.scanner.devices.sg6900.SG6900ScannerManager;
@@ -24,8 +26,7 @@ public class SupporterManager<T extends IScannerManager> {
      * 型号 NLS-MT9210，制造商 Newland
      */
     public enum ScannerSupporter {
-        SUNMI("SUNMI"), alps("alps"), SEUIC("SEUIC"), UBX("UBX"), OTHER("OTHER"), idata("idata"),
-        SG6900("SG6900"), HT380K("HT380K"), MT6210("NLS-MT6210"), MT9210("NLS-MT9210");
+        SUNMI("SUNMI"), alps("alps"), SEUIC("SEUIC"), UBX("UBX"), OTHER("OTHER"), idata("idata"), SG6900("SG6900"), HT380K("HT380K"), MT6210("NLS-MT6210"), MT9210("NLS-MT9210"), PDA("PDA");
 
         private String name;
 
@@ -43,6 +44,7 @@ public class SupporterManager<T extends IScannerManager> {
     }
 
     private ScannerSupporter getSupporter() {
+        Log.e("TAG", "型号" + Build.MODEL + "，厂商" + Build.MANUFACTURER);
         // 先根据型号适配
         for (ScannerSupporter supporter : ScannerSupporter.values()) {
             if (supporter.getName().equals(Build.MODEL)) {
@@ -59,7 +61,7 @@ public class SupporterManager<T extends IScannerManager> {
     }
 
     public SupporterManager(Context context, @NonNull IScanListener listener) {
-        ScannerSupporter scannerSupporter =getSupporter();
+        ScannerSupporter scannerSupporter = getSupporter();
         switch (scannerSupporter) {
             case SUNMI:
                 scannerManager = (T) SunmiScannerManager.getInstance(context);
@@ -85,6 +87,9 @@ public class SupporterManager<T extends IScannerManager> {
                 break;
             case HT380K:
                 scannerManager = (T) HT380KScannerManager.getInstance(context);
+                break;
+            case PDA:
+                scannerManager = (T) PDAScannerManager.getInstance(context);
                 break;
             default:
                 scannerManager = (T) new OtherScannerManager(context);
