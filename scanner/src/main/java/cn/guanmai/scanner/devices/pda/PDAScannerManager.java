@@ -1,4 +1,4 @@
-package cn.guanmai.scanner.devices;
+package cn.guanmai.scanner.devices.pda;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -59,6 +59,7 @@ public class PDAScannerManager implements IScannerManager {
         mScanDevice.openScan();
         mScanDevice.setOutScanMode(0);
         registerReceiver();
+        listener.onScannerServiceConnected();
     }
 
     @Override

@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import cn.guanmai.scanner.devices.PDAScannerManager;
+import cn.guanmai.scanner.devices.pda.PDAScannerManager;
 import cn.guanmai.scanner.devices.jb.HT380KScannerManager;
 import cn.guanmai.scanner.devices.newland.MT6210ScannerManager;
 import cn.guanmai.scanner.devices.sg6900.SG6900ScannerManager;
