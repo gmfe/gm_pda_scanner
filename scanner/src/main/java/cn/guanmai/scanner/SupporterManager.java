@@ -6,9 +6,10 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import cn.guanmai.scanner.devices.pda.PDAScannerManager;
 import cn.guanmai.scanner.devices.jb.HT380KScannerManager;
 import cn.guanmai.scanner.devices.newland.MT6210ScannerManager;
+import cn.guanmai.scanner.devices.pda.PDAScannerManager;
+import cn.guanmai.scanner.devices.seuic.PDT90FScannerManager;
 import cn.guanmai.scanner.devices.sg6900.SG6900ScannerManager;
 
 public class SupporterManager<T extends IScannerManager> {
@@ -26,7 +27,9 @@ public class SupporterManager<T extends IScannerManager> {
      * 型号 NLS-MT9210，制造商 Newland
      */
     public enum ScannerSupporter {
-        SUNMI("SUNMI"), alps("alps"), SEUIC("SEUIC"), UBX("UBX"), OTHER("OTHER"), idata("idata"), SG6900("SG6900"), HT380K("HT380K"), MT6210("NLS-MT6210"), MT9210("NLS-MT9210"), MT90("NLS-MT90"), PDA("PDA");
+        SUNMI("SUNMI"), alps("alps"), SEUIC("SEUIC"), UBX("UBX"), OTHER("OTHER"), idata("idata"),
+        SG6900("SG6900"), HT380K("HT380K"), MT6210("NLS-MT6210"), MT9210("NLS-MT9210"),
+        MT90("NLS-MT90"), PDA("PDA"), PDT90F("PDT-90F");
 
         private String name;
 
@@ -91,6 +94,9 @@ public class SupporterManager<T extends IScannerManager> {
                 break;
             case PDA:
                 scannerManager = (T) PDAScannerManager.getInstance(context);
+                break;
+            case PDT90F:
+                scannerManager = (T) PDT90FScannerManager.getInstance(context);
                 break;
             default:
                 scannerManager = (T) new OtherScannerManager(context);
