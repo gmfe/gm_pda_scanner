@@ -1,25 +1,30 @@
-package cn.guanmai.scanner;
+package cn.guanmai.scanner.devices.HandHeld;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.device.ScanManager;
+import android.device.scanner.configuration.PropertyID;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.widget.Toast;
 
-public class OtherScannerManager implements IScannerManager {
+import cn.guanmai.scanner.IScannerManager;
+import cn.guanmai.scanner.LogUtil;
+import cn.guanmai.scanner.SupporterManager;
+
+public class HandHeldScannerManager implements IScannerManager {
     private Handler handler = new Handler(Looper.getMainLooper());
     private Context mContext;
+    private static HandHeldScannerManager instance;
     private SupporterManager.IScanListener listener;
 
-
-    private static final String START_SCAN_TRIGGER = "cn.guanmai.scanner.START";
-    private static final String STOP_SCAN_TRIGGER = "cn.guanmai.scanner.STOP";
-    private static final String DATA_RECEIVED_ACTION = "cn.guanmai.scanner.data";
+    private static final String START_SCAN_TRIGGER = "com.uc.scanner.trigger.START";
+    private static final String STOP_SCAN_TRIGGER = "com.uc.scanner.trigger.STOP";
+    private static final String ACTION_DATA_CODE_RECEIVED = "com.uc.scanner.result";
     public static final String SCAN_RESULT = "string";
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -29,6 +34,7 @@ public class OtherScannerManager implements IScannerManager {
                 @Override
                 public void run() {
                     String result = intent.getStringExtra(SCAN_RESULT);
+                    LogUtil.printLog("[RECV] data=" + result);
                     if (!TextUtils.isEmpty(result)) {
                         listener.onScannerResultChange(result);
                     }
@@ -37,27 +43,28 @@ public class OtherScannerManager implements IScannerManager {
         }
     };
 
-    OtherScannerManager(Context context) {
-        this.mContext = context;
+    private HandHeldScannerManager(Context activity) {
+        this.mContext = activity;
+    }
+
+    public static HandHeldScannerManager getInstance(Context activity) {
+        if (instance == null) {
+            synchronized (HandHeldScannerManager.class) {
+                if (instance == null) {
+                    instance = new HandHeldScannerManager(activity);
+                }
+            }
+        }
+        return instance;
     }
 
     @Override
     public void init() {
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(DATA_RECEIVED_ACTION);
+        intentFilter.addAction(ACTION_DATA_CODE_RECEIVED);
         mContext.registerReceiver(receiver, intentFilter);
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(mContext, "匹配默认配置", Toast.LENGTH_SHORT).show();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        listener.onScannerServiceConnected();
-                    }
-                }, 800);
-            }
-        });
+
+        listener.onScannerServiceConnected();
     }
 
     @Override
@@ -72,42 +79,42 @@ public class OtherScannerManager implements IScannerManager {
 
     @Override
     public void sendKeyEvent(KeyEvent key) {
-
+        LogUtil.printLog("[sendKeyEvent] value=" + key);
     }
 
     @Override
     public int getScannerModel() {
+        LogUtil.printLog("[getScannerModel] value=" + 0);
         return 0;
     }
 
     @Override
     public void scannerEnable(boolean enable) {
-
+        LogUtil.printLog("[scannerEnable] value=" + enable);
     }
 
     @Override
     public void setScanMode(String mode) {
-
+        LogUtil.printLog("[setScanMode] value=" + mode);
     }
 
     @Override
     public void setDataTransferType(String type) {
-
+        LogUtil.printLog("[setDataTransferType] value=" + type);
     }
 
     @Override
     public void singleScan(boolean bool) {
-        if (mContext != null) {
-            if (bool) {
-                mContext.sendBroadcast(new Intent(START_SCAN_TRIGGER));
-            } else {
-                mContext.sendBroadcast(new Intent(STOP_SCAN_TRIGGER));
-            }
+        LogUtil.printLog("[singleScan] value=" + bool);
+        if (bool) {
+            mContext.sendBroadcast(new Intent(START_SCAN_TRIGGER));
+        } else {
+            mContext.sendBroadcast(new Intent(STOP_SCAN_TRIGGER));
         }
     }
 
     @Override
     public void continuousScan(boolean bool) {
-
+        LogUtil.printLog("[continuousScan] value=" + bool);
     }
 }
