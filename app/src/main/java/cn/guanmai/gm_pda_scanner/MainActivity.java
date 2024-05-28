@@ -13,12 +13,16 @@ import cn.guanmai.scanner.SupporterManager;
 public class MainActivity extends AppCompatActivity {
     private SupporterManager mScannerManager;
     private TextView mTextView;
+    private View start;
+    private View stop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mTextView = findViewById(R.id.result);
+        start = findViewById(R.id.start);
+        stop = findViewById(R.id.stop);
         mTextView.setText("制造商：" + Build.MANUFACTURER + "\n" + "型号：" + Build.MODEL);
         Button clearText = findViewById(R.id.clear);
         clearText.setOnClickListener(new View.OnClickListener() {
@@ -28,6 +32,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         initScanner();
+        initListener();
+    }
+    private void initListener() {
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mScannerManager.singleScan(true);
+            }
+        });
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mScannerManager.singleScan(false);
+            }
+        });
     }
 
     private void initScanner() {

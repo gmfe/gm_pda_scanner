@@ -6,7 +6,10 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.KeyEvent;
 
+import cn.guanmai.scanner.devices.HandHeld.HandHeldScannerManager;
+import cn.guanmai.scanner.devices.ct58.CT58ScannerManager;
 import cn.guanmai.scanner.devices.jb.HT380KScannerManager;
+import cn.guanmai.scanner.devices.kp18.KP18ScannerManager;
 import cn.guanmai.scanner.devices.newland.MT6210ScannerManager;
 import cn.guanmai.scanner.devices.pda.PDAScannerManager;
 import cn.guanmai.scanner.devices.seuic.PDT90FScannerManager;
@@ -27,9 +30,17 @@ public class SupporterManager<T extends IScannerManager> {
      * 型号 NLS-MT9210，制造商 Newland
      */
     public enum ScannerSupporter {
-        SUNMI("SUNMI"), alps("alps"), SEUIC("SEUIC"), UBX("UBX"), OTHER("OTHER"), idata("idata"),
-        SG6900("SG6900"), HT380K("HT380K"), MT6210("NLS-MT6210"), MT9210("NLS-MT9210"),
-        MT90("NLS-MT90"), MT66("NLS-MT66"), PDA("PDA"), PDT90F("PDT-90F"), T1("T1");
+        alps("alps"),
+        CT58("CT58"),
+        HAND_HELD("Hand-held Terminal"), HT380K("HT380K"),
+        idata("idata"),
+        KP18("KP18"),
+        MT90("NLS-MT90"), MT66("NLS-MT66"), MT6210("NLS-MT6210"), MT9210("NLS-MT9210"),
+        OTHER("OTHER"),
+        PDA("PDA"), PDT90F("PDT-90F"),
+        SG6900("SG6900"), SUNMI("SUNMI"), SEUIC("SEUIC"),
+        T1("T1"),
+        UBX("UBX");
 
         private String name;
 
@@ -65,6 +76,7 @@ public class SupporterManager<T extends IScannerManager> {
 
     public SupporterManager(Context context, @NonNull IScanListener listener) {
         ScannerSupporter scannerSupporter = getSupporter();
+        Log.i("Scanner","[ScannerSupporter] ="+scannerSupporter);
         switch (scannerSupporter) {
             case SUNMI:
                 scannerManager = (T) SunmiScannerManager.getInstance(context);
@@ -100,10 +112,21 @@ public class SupporterManager<T extends IScannerManager> {
             case PDT90F:
                 scannerManager = (T) PDT90FScannerManager.getInstance(context);
                 break;
+            case CT58:
+                scannerManager = (T) CT58ScannerManager.getInstance(context);
+                break;
+            case HAND_HELD:
+                scannerManager = (T) HandHeldScannerManager.getInstance(context);
+                break;
+            case KP18:
+                scannerManager = (T) KP18ScannerManager.getInstance(context);
+                break;
             default:
                 scannerManager = (T) new OtherScannerManager(context);
                 break;
         }
+
+        Log.i("Scanner","[scannerManager] ="+scannerManager);
         scannerManager.setScannerListener(listener);
         scannerManager.init();
     }
