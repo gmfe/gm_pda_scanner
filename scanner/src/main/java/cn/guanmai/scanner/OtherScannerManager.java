@@ -45,7 +45,11 @@ public class OtherScannerManager implements IScannerManager {
     public void init() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(DATA_RECEIVED_ACTION);
-        mContext.registerReceiver(receiver, intentFilter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            mContext.registerReceiver(receiver, intentFilter, Context.RECEIVER_EXPORTED);
+        } else {
+            mContext.registerReceiver(receiver, intentFilter);
+        }
         handler.post(new Runnable() {
             @Override
             public void run() {
