@@ -28,11 +28,12 @@ public class SupporterManager<T extends IScannerManager> {
      * 型号HT380K: 深圳市捷宝科技有限公司
      * 型号 NLS-MT6210，制造商 Newland
      * 型号 NLS-MT9210，制造商 Newland
+     * 型号 GM-B9920P，制造商Hand-held Terminal
      */
     public enum ScannerSupporter {
         alps("alps"),
         CT58("CT58"),
-        HAND_HELD("Hand-held Terminal"), HT380K("HT380K"),
+        HAND_HELD("GM-B9920P"), HT380K("HT380K"),
         idata("idata"),
         KP18("KP18"),
         MT90("NLS-MT90"), MT66("NLS-MT66"), MT6210("NLS-MT6210"), MT9210("NLS-MT9210"),
