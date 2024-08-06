@@ -15,6 +15,7 @@ import android.view.KeyEvent;
 import cn.guanmai.scanner.IScannerManager;
 import cn.guanmai.scanner.LogUtil;
 import cn.guanmai.scanner.SupporterManager;
+import cn.guanmai.scanner.BroadcastUtil;
 
 public class HandHeldScannerManager implements IScannerManager {
     private Handler handler = new Handler(Looper.getMainLooper());
@@ -62,8 +63,7 @@ public class HandHeldScannerManager implements IScannerManager {
     public void init() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_DATA_CODE_RECEIVED);
-        mContext.registerReceiver(receiver, intentFilter);
-
+        BroadcastUtil.registerReceiver(mContext, receiver, intentFilter);
         listener.onScannerServiceConnected();
     }
 
