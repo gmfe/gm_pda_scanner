@@ -41,6 +41,7 @@ public class SupporterManager<T extends IScannerManager> {
         PDA("PDA"), PDT90F("PDT-90F"),
         SG6900("SG6900"), SUNMI("SUNMI"), SEUIC("SEUIC"),
         T1("T1"),
+        T1S("T1S"),
         UBX("UBX");
 
         private String name;
@@ -99,6 +100,7 @@ public class SupporterManager<T extends IScannerManager> {
                 break;
             case idata:
             case T1:
+            case T1S:
                 scannerManager = (T) IDataScannerManager.getInstance(context);
                 break;
             case SG6900:
