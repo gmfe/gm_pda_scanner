@@ -100,8 +100,10 @@ public class SupporterManager<T extends IScannerManager> {
                 break;
             case idata:
             case T1:
-            case T1S:
                 scannerManager = (T) IDataScannerManager.getInstance(context);
+                break;
+            case T1S:
+                scannerManager = (T) IDataT1SScannerManager.getInstance(context);
                 break;
             case SG6900:
                 scannerManager = (T) SG6900ScannerManager.getInstance(context);

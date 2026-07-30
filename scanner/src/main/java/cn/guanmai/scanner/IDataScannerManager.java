@@ -9,13 +9,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 public class IDataScannerManager implements IScannerManager {
-    private Context activity;
+    protected Context activity;
     private static IDataScannerManager instance;
     private IDataScannerInterface mScanner;
     private SupporterManager.IScanListener listener;
-    private static final String RES_ACTION = "android.intent.action.SCANRESULT";
+    protected static final String RES_ACTION = "android.intent.action.SCANRESULT";
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
+    protected BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(RES_ACTION)) {
@@ -32,7 +32,7 @@ public class IDataScannerManager implements IScannerManager {
         }
     };
 
-    private IDataScannerManager(Context context) {
+    protected IDataScannerManager(Context context) {
         this.activity = context;
     }
 
@@ -135,7 +135,7 @@ public class IDataScannerManager implements IScannerManager {
         mScanner.continceScan(bool);
     }
 
-    private void registerReceiver() {
+    protected void registerReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(RES_ACTION);
         activity.registerReceiver(receiver, intentFilter);
