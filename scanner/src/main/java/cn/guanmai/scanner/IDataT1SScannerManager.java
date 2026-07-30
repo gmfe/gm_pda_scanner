@@ -45,7 +45,9 @@ public class IDataT1SScannerManager extends IDataScannerManager {
             if (Build.VERSION.SDK_INT >= 34) {
                 // Android 14：必须显式声明导出标志，否则 SecurityException 闪退；
                 // 扫码结果来自 iData 扫描服务（跨进程），故用 RECEIVER_EXPORTED。
-                activity.registerReceiver(receiver, intentFilter, Context.RECEIVER_EXPORTED);
+                // 用字面量 0x2（=Context.RECEIVER_EXPORTED）：本库 compileSdk=28，
+                // 该常量在 API 28 的 android.jar 中尚不存在（BroadcastUtil 的 0x4 同理）。
+                activity.registerReceiver(receiver, intentFilter, 0x2);
             } else {
                 activity.registerReceiver(receiver, intentFilter);
             }
