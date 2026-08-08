@@ -12,6 +12,7 @@ import cn.guanmai.scanner.devices.jb.HT380KScannerManager;
 import cn.guanmai.scanner.devices.kp18.KP18ScannerManager;
 import cn.guanmai.scanner.devices.newland.MT6210ScannerManager;
 import cn.guanmai.scanner.devices.pda.PDAScannerManager;
+import cn.guanmai.scanner.devices.seuic.AutoId3PScannerManager;
 import cn.guanmai.scanner.devices.seuic.PDT90FScannerManager;
 import cn.guanmai.scanner.devices.sg6900.SG6900ScannerManager;
 
@@ -38,7 +39,7 @@ public class SupporterManager<T extends IScannerManager> {
         KP18("KP18"),
         MT90("NLS-MT90"), MT66("NLS-MT66"), MT6210("NLS-MT6210"), MT9210("NLS-MT9210"),
         OTHER("OTHER"),
-        PDA("PDA"), PDT90F("PDT-90F"),
+        PDA("PDA"), PDT90F("PDT-90F"), AUTOID3P("AUTOID 3P"),
         SG6900("SG6900"), SUNMI("SUNMI"), SEUIC("SEUIC"),
         T1("T1"),
         T1S("T1S"),
@@ -116,6 +117,9 @@ public class SupporterManager<T extends IScannerManager> {
                 break;
             case PDT90F:
                 scannerManager = (T) PDT90FScannerManager.getInstance(context);
+                break;
+            case AUTOID3P:
+                scannerManager = (T) AutoId3PScannerManager.getInstance(context);
                 break;
             case CT58:
                 scannerManager = (T) CT58ScannerManager.getInstance(context);
