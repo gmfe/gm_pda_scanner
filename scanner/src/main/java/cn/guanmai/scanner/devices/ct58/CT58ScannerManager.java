@@ -27,6 +27,10 @@ public class CT58ScannerManager implements IScannerManager {
 
     ScanManager mScanManager = new ScanManager();
 
+    // 广播接收器是否处于已注册状态：Activity 重建（转屏等配置变更）会再次走 init/onDestroy，
+    // 没有该标记时 unregisterReceiver 会对未注册的接收器抛 IllegalArgumentException 直接 FATAL 崩溃
+    private boolean isReceiverRegistered = false;
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, final Intent intent) {
@@ -78,14 +82,36 @@ public class CT58ScannerManager implements IScannerManager {
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_DATA_CODE_RECEIVED);
-        mContext.registerReceiver(receiver, intentFilter);
+        // Activity 重建会再次 init：先安全注销旧注册再重新注册，避免重复注册导致扫码回调翻倍；
+        // 注册过程不能向外抛异常——否则 MainActivity.onCreate 中断，后续 destroy 时
+        // recycle 注销"从未注册成功"的接收器会触发 FATAL 崩溃
+        safeUnregister();
+        try {
+            mContext.registerReceiver(receiver, intentFilter);
+            isReceiverRegistered = true;
+        } catch (Exception e) {
+            // 注册失败（如 Activity 已销毁等竞态）：保持未注册状态，本次扫码不可用但不崩溃
+            isReceiverRegistered = false;
+        }
 
         listener.onScannerServiceConnected();
     }
 
     @Override
     public void recycle() {
-        mContext.unregisterReceiver(receiver);
+        safeUnregister();
+    }
+
+    // 幂等注销：仅在已注册时注销，并吞掉"未注册"异常（生命周期竞态下系统可能已注销）
+    private void safeUnregister() {
+        if (isReceiverRegistered) {
+            try {
+                mContext.unregisterReceiver(receiver);
+            } catch (IllegalArgumentException e) {
+                // 接收器已处于未注册状态，无需处理
+            }
+            isReceiverRegistered = false;
+        }
     }
 
     @Override
